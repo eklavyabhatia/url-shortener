@@ -1,8 +1,11 @@
 const express = require('express')
 const app = express()
-const shortToLong = require('./routes/api1/shortToLong')
+const api = require('./routes/api')
 
-app.use('/api1', shortToLong)
+app.use(express.urlencoded({ extended: true }))
+app.use(express.json())
+
+app.use('/api', api)
 
 app.listen(4321, (err) => {
     if (err) {

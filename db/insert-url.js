@@ -6,7 +6,7 @@ const task = async (mainUrl) => {
     try {
         const id = await URL.count()
 
-        const shortCode = longToShort.idToShortCode(id+1)
+        const shortCode = longToShort.idToShortCode(id + 1)
         await db.sync()
         await URL.create({
             main_url: mainUrl,
@@ -19,4 +19,6 @@ const task = async (mainUrl) => {
 
 }
 
-task('url')
+module.exports = {
+    task
+}

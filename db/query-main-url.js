@@ -1,19 +1,21 @@
 const { db, URL } = require('./model')
 const { shortCodeToId } = require('../base-conversion/short-to-long')
 
-const task=async(shortCode)=>{
-    try{
+const task = async (shortCode) => {
+    try {
         await db.sync()
-        const id=shortCodeToId(shortCode)
-        const url=await URL.findByPk(id)
-        if(!url){
+        const id = shortCodeToId(shortCode)
+        const url = await URL.findByPk(id)
+        if (!url) {
             return null
-        }else{
+        } else {
             return url.dataValues
         }
-    }catch(err){
+    } catch (err) {
         console.error(err)
     }
 }
 
-task('shortcode')
+module.exports = {
+    task
+}
