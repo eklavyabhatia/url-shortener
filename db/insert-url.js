@@ -1,12 +1,12 @@
 const { db, URL } = require('./model')
 const longToShort = require('../base-conversion/long-to-short')
-// console.log(longToShort)
+
 
 const task = async (mainUrl) => {
     try {
-        const urls = await URL.findAll()
+        const id = await URL.count()
 
-        const shortCode = await longToShort.idToShortCode(urls.length+1)
+        const shortCode = longToShort.idToShortCode(id+1)
         await db.sync()
         await URL.create({
             main_url: mainUrl,
@@ -19,4 +19,4 @@ const task = async (mainUrl) => {
 
 }
 
-task('https://gmail.com')
+task('url')
