@@ -7,6 +7,8 @@ app.use(express.json())
 
 app.use('/api', api)
 
+app.use('/public', express.static(__dirname + '/public'))
+
 app.listen(4321, (err) => {
     if (err) {
         console.error(err)
