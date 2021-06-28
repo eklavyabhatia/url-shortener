@@ -14,7 +14,7 @@ const task = async (mainUrl) => {
         })
 
     } catch (err) {
-        console.error(err)
+        throw err
     }
 
 }

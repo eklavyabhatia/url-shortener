@@ -2,32 +2,58 @@ const route = require('express').Router()
 const queryMainUrl = require('../db/query-main-url')
 const insertUrl = require('../db/insert-url')
 
-async function fun(shortCode) {
-    const url = await queryMainUrl.task(shortCode)
-    console.log(url)
+async function getUrlInstanceFromShortCode(shortCode, flag) {
+    try {
+        const url = await queryMainUrl.task(shortCode)
+        if (flag) {
+
+            url.counter = url.counter + 1;
+            await url.increment('counter')
+        }
+
+        return url
+
+    } catch (err) {
+        if (err) {
+            console.error(err)
+        }
+    }
 }
 
 route.get('/:shortCode', (req, res) => {
     const shortCode = req.params.shortCode;
 
     (async (shortCode) => {
-        try {
-            const url = await queryMainUrl.task(shortCode)
+        const url = await getUrlInstanceFromShortCode(shortCode,true)
 
-            if (url) {
-                res.json(url)
-            } else {
-                res.json({ err: 'url not found' })
-            }
-
-        } catch (err) {
-            if (err) {
-                console.error(err)
-            }
+        if (url) {
+            res.json(url)
+        } else {
+            res.json({ 'message': 'short link does not exist' })
         }
     })(shortCode)
 
+
+
 })
+
+route.get('/count/:shortCode', (req, res) => {
+    const shortCode = req.params.shortCode;
+
+    (async (shortCode) => {
+        const url = await getUrlInstanceFromShortCode(shortCode,false)
+
+        if (url) {
+            res.json({ count: url.counter })
+        } else {
+            res.json({ 'message': 'short link does not exist' })
+        }
+    })(shortCode)
+
+
+
+})
+
 
 route.post('/', (req, res) => {
     console.log(req.body)

@@ -9,10 +9,10 @@ const task = async (shortCode) => {
         if (!url) {
             return null
         } else {
-            return url.dataValues
+            return url
         }
     } catch (err) {
-        console.error(err)
+        throw err
     }
 }
 
